@@ -21,12 +21,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Ground Check")]
     public float playerHeight;
-    public LayerMask whatIsGround;
+    //public LayerMask whatIsGround;
     [SerializeField] private bool grounded;
     private float primaryY;
     private float secondaryY;
-    private bool repeatGCloop;
-    private bool isOnStairs;
 
     public bool isWalking = false;
 
@@ -45,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
         this.transform.position = new Vector3(-0.5f, -3, -1);
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        repeatGCloop = true;
 
         playerDelegate += MyInput;
         playerDelegate += SpeedControl;
@@ -55,10 +52,6 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
-        if (repeatGCloop)
-        {
-            StartCoroutine(testGroundCheck());
-        }
         playerDelegate();
         //handle drag
         if (grounded)
@@ -91,59 +84,27 @@ public class PlayerMovement : MonoBehaviour
 
     //OnSprintInput but use events 
 
-
-    private IEnumerator testGroundCheck()
-    {
-        repeatGCloop = false;
-        yield return new WaitForSeconds(0.01f);
-        primaryY = this.transform.position.y;
-        yield return new WaitForSeconds(0.01f);
-        secondaryY = this.transform.position.y;
-        if (primaryY == secondaryY)
-        {
-            grounded = true;
-        }
-        else
-        {
-            if (isOnStairs)
-            {
-                grounded = true;
-            }
-            else
-            {
-                grounded = false;
-            }
-
-        }
-        repeatGCloop = true;
-    }
-
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.tag == "Stairs")
+        if (collision.transform.tag == "Ground")
         {
-            //Debug.Log("Colliding with stairs");
-            isOnStairs = true;
+            grounded = true;
+            
         }
-
-
-
+      
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.transform.tag == "Stairs")
+        if (collision.transform.tag == "Ground")
         {
-            //Debug.Log("Leaving stairs");
-            isOnStairs = false;
+            grounded = false;
+            print("Deez nuts");
+            
         }
-        /*if (collision.transform.tag == "Ground")
-        {
-            //Debug.Log("Leaving GROUND");
-        }*/
-
-
     }
+
+
     private void MovePlayer()
     {
 

@@ -14,7 +14,7 @@ public class ChaseState : State
     public GameObject player;
     public GameObject ghoul;
 
-    public Transform centrePoint;
+    //public Transform centrePoint;
     public override State RunCurrentState()
     {
         if(isInAttackRange)
