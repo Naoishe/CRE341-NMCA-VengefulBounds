@@ -6,12 +6,21 @@ public class GemSpawner : MonoBehaviour
 {
     public static int GemCountReset = 0;
     public GameObject gemPrefab;
-    private bool terms = false;
     public int GemSpawned = 0;
+
+    private bool destroyAll = false;
+
+    public GameManager gameManager; 
+    private bool enablegen = false;
 
     private void Update()
     {
-        if (terms)
+        destroyAll = gameManager.gameBegan;
+        if (gameManager.spawnents)
+        {
+            enablegen= true;
+        }
+        if (enablegen)
         {
             for(int i=0; i<20; i++)
             {
